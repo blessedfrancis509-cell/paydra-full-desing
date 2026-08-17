@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserProfile } from '../types';
-import { ShieldCheck, Lock, Smartphone, ArrowRight, UserPlus, LogIn, Sparkles, CheckCircle2, ChevronRight, Fingerprint } from 'lucide-react';
+import { ShieldCheck, Lock, Smartphone, ArrowRight, UserPlus, LogIn, Sparkles, CheckCircle2, ChevronRight, Fingerprint, PlayCircle } from 'lucide-react';
 
 interface AuthScreenProps {
   defaultUser: UserProfile;
@@ -76,6 +76,10 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
     onLoginSuccess(newUser);
   };
 
+  const handleDemoLogin = () => {
+    onLoginSuccess(defaultUser);
+  };
+
   const activeSlideData = CAROUSEL_SLIDES[currentSlide];
 
   return (
@@ -83,7 +87,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
       {/* Container Box */}
       <div className="w-full max-w-4xl bg-white rounded-[32px] overflow-hidden shadow-2xl border border-slate-200 grid grid-cols-1 md:grid-cols-2">
         {/* LEFT COLUMN: 3 CHANGING IMAGES HERO CAROUSEL (OPAY ONBOARDING DESIGN) */}
-        <div className="relative min-h-[320px] md:min-h-[580px] bg-gradient-to-br from-indigo-900 via-purple-950 to-slate-950 text-white p-6 sm:p-8 flex flex-col justify-between overflow-hidden">
+        <div className="relative min-h-[320px] md:min-h-[600px] bg-gradient-to-br from-indigo-900 via-purple-950 to-slate-950 text-white p-6 sm:p-8 flex flex-col justify-between overflow-hidden">
           {/* Background Image with Smooth Crossfade */}
           <div className="absolute inset-0 z-0 opacity-40 mix-blend-overlay transition-opacity duration-1000">
             <img
@@ -139,9 +143,32 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
           </div>
         </div>
 
-        {/* RIGHT COLUMN: OPAY AUTHENTICATION FORM (PURPLE & WHITE) */}
-        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-6 bg-white">
-          <div className="space-y-5">
+        {/* RIGHT COLUMN: OPAY AUTHENTICATION FORM WITH DEMO LOGIN */}
+        <div className="p-6 sm:p-8 flex flex-col justify-between space-y-5 bg-white">
+          <div className="space-y-4">
+            {/* DEMO LOGIN INSTANT BUTTON BANNER */}
+            <button
+              onClick={handleDemoLogin}
+              className="w-full p-3.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-2xl shadow-lg shadow-emerald-500/25 flex items-center justify-between transition-all cursor-pointer hover:scale-[1.02] border border-emerald-400 group"
+            >
+              <div className="flex items-center gap-2.5 text-left">
+                <div className="p-2 bg-white/20 rounded-xl">
+                  <PlayCircle className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <span className="text-xs font-black block tracking-tight">1-Tap Demo Login</span>
+                  <span className="text-[10px] text-emerald-100 font-medium block">Instant test access • No registration required</span>
+                </div>
+              </div>
+              <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <div className="relative flex py-1 items-center">
+              <div className="flex-grow border-t border-slate-200"></div>
+              <span className="shrink mx-3 text-[10px] font-bold text-slate-400 uppercase">Or sign in with account</span>
+              <div className="flex-grow border-t border-slate-200"></div>
+            </div>
+
             {/* Mode Switcher Pill */}
             <div className="grid grid-cols-2 gap-1 p-1 bg-slate-100 rounded-2xl text-xs font-bold">
               <button
@@ -166,12 +193,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
             </div>
 
             {mode === 'LOGIN' ? (
-              <form onSubmit={handleLoginSubmit} className="space-y-4">
-                <div>
-                  <h3 className="text-base font-black text-slate-900 tracking-tight">Welcome Back! 👋</h3>
-                  <p className="text-xs text-slate-500">Log in with your registered phone number & PIN</p>
-                </div>
-
+              <form onSubmit={handleLoginSubmit} className="space-y-3.5">
                 {/* Phone Number Input with Nigeria Country Code */}
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">Mobile Phone Number</label>
@@ -185,7 +207,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="8123456789"
-                      className="w-full pl-20 pr-4 py-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono font-bold text-slate-900 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                      className="w-full pl-20 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm font-mono font-bold text-slate-900 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
                     />
                   </div>
                 </div>
@@ -220,38 +242,23 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                           }
                         }}
                         id={`login_pin_${idx}`}
-                        className="w-12 h-12 text-center bg-slate-50 border border-slate-300 rounded-2xl text-lg font-black text-slate-900 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                        className="w-11 h-11 text-center bg-slate-50 border border-slate-300 rounded-2xl text-lg font-black text-slate-900 focus:ring-2 focus:ring-indigo-600 focus:outline-none"
                       />
                     ))}
                   </div>
                 </div>
 
-                {/* Biometric Quick Login */}
-                <button
-                  type="button"
-                  onClick={() => onLoginSuccess(defaultUser)}
-                  className="w-full py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-2xl border border-indigo-200 flex items-center justify-center gap-2 transition-colors cursor-pointer"
-                >
-                  <Fingerprint className="w-4 h-4 text-indigo-600" />
-                  <span>Quick Login with Biometrics / Face ID</span>
-                </button>
-
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-2xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
+                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-2xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
                 >
                   <span>Log In to Paydra</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
             ) : (
-              <form onSubmit={handleRegisterSubmit} className="space-y-4">
-                <div>
-                  <h3 className="text-base font-black text-slate-900 tracking-tight">Open Paydra Account 🚀</h3>
-                  <p className="text-xs text-slate-500">Get your zero-fee account in under 60 seconds</p>
-                </div>
-
+              <form onSubmit={handleRegisterSubmit} className="space-y-3">
                 <div>
                   <label className="text-xs font-bold text-slate-700 block mb-1">Full Legal Name</label>
                   <input
@@ -288,7 +295,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-2xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
+                  className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-2xl shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
                 >
                   <span>Create Paydra Account</span>
                   <UserPlus className="w-4 h-4" />
@@ -298,7 +305,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({
           </div>
 
           {/* Footer Security Badge */}
-          <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500 font-semibold">
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500 font-semibold">
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               <span>CBN Licensed & NDIC Insured</span>
