@@ -28,14 +28,15 @@ import {
 } from 'lucide-react';
 import { triggerSuccessConfetti } from '../utils/confetti';
 
+type NetworkProvider = 'MTN' | 'Airtel' | 'Glo' | '9mobile';
+type BillCategory = 'DATA' | 'AIRTIME' | 'ELECTRICITY' | 'TV' | 'BETTING';
+
 interface BillsPageProps {
   userBalance: number;
   onCompleteBillPayment: (tx: Transaction) => void;
   onBackToOverview: () => void;
+  initialCategory?: BillCategory;
 }
-
-type NetworkProvider = 'MTN' | 'Airtel' | 'Glo' | '9mobile';
-type BillCategory = 'DATA' | 'AIRTIME' | 'ELECTRICITY' | 'TV' | 'BETTING';
 
 interface DataBundle {
   id: string;
@@ -147,8 +148,9 @@ export const BillsPage: React.FC<BillsPageProps> = ({
   userBalance,
   onCompleteBillPayment,
   onBackToOverview,
+  initialCategory,
 }) => {
-  const [activeCategory, setActiveCategory] = useState<BillCategory>('DATA');
+  const [activeCategory, setActiveCategory] = useState<BillCategory>(initialCategory || 'DATA');
   const [selectedNetwork, setSelectedNetwork] = useState<NetworkProvider>('MTN');
   const [phone, setPhone] = useState('08123456789');
 
