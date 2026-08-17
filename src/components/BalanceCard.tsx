@@ -29,8 +29,10 @@ interface BalanceCardProps {
   onOpenSendMoney: () => void;
   onOpenAddMoney: () => void;
   onOpenRequestMoney: () => void;
-  onOpenPayBills: () => void;
+  onOpenPayBills: (category?: 'DATA' | 'AIRTIME' | 'ELECTRICITY' | 'TV' | 'BETTING') => void;
   onOpenFXSwap: () => void;
+  onOpenTransactions: () => void;
+  onOpenVaults: () => void;
 }
 
 export const BalanceCard: React.FC<BalanceCardProps> = ({
@@ -44,6 +46,8 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
   onOpenRequestMoney,
   onOpenPayBills,
   onOpenFXSwap,
+  onOpenTransactions,
+  onOpenVaults,
 }) => {
   const [showBalance, setShowBalance] = useState(true);
   const [copied, setCopied] = useState(false);
@@ -84,8 +88,8 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
             </div>
 
             <button
-              onClick={onOpenSendMoney}
-              className="text-xs font-bold text-indigo-200 hover:text-white flex items-center gap-0.5 cursor-pointer"
+              onClick={onOpenTransactions}
+              className="text-xs font-bold text-indigo-200 hover:text-white flex items-center gap-0.5 cursor-pointer hover:underline"
             >
               <span>Transaction History</span>
               <ChevronRight className="w-3.5 h-3.5" />
@@ -144,18 +148,18 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
         </div>
       </div>
 
-      {/* 2. SERVICES QUICK GRID (8 ICONS IN 2 ROWS) */}
+      {/* 2. SERVICES QUICK GRID (SPECIFIC DIRECT PAGE REDIRECTION) */}
       <div className="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200/80 shadow-xs">
         <div className="grid grid-cols-4 sm:grid-cols-8 gap-3 sm:gap-4 text-center">
           {[
-            { label: 'Airtime', icon: Smartphone, color: 'bg-purple-100 text-purple-700', action: onOpenPayBills },
-            { label: 'Data', icon: Wifi, color: 'bg-indigo-100 text-indigo-700', action: onOpenPayBills },
-            { label: 'Betting', icon: Gamepad2, color: 'bg-emerald-100 text-emerald-700', action: onOpenPayBills },
-            { label: 'TV', icon: Tv, color: 'bg-amber-100 text-amber-700', action: onOpenPayBills },
-            { label: 'SafeBox', icon: PiggyBank, color: 'bg-purple-100 text-purple-700', action: onOpenPayBills },
-            { label: 'Loan', icon: Sparkles, color: 'bg-indigo-100 text-indigo-700', action: onOpenPayBills },
-            { label: 'PayAjo', icon: Zap, color: 'bg-amber-100 text-amber-700', action: onOpenPayBills },
-            { label: 'More', icon: ChevronRight, color: 'bg-slate-100 text-slate-700', action: onOpenPayBills },
+            { label: 'Airtime', icon: Smartphone, color: 'bg-purple-100 text-purple-700', action: () => onOpenPayBills('AIRTIME') },
+            { label: 'Data', icon: Wifi, color: 'bg-indigo-100 text-indigo-700', action: () => onOpenPayBills('DATA') },
+            { label: 'Betting', icon: Gamepad2, color: 'bg-emerald-100 text-emerald-700', action: () => onOpenPayBills('BETTING') },
+            { label: 'TV', icon: Tv, color: 'bg-amber-100 text-amber-700', action: () => onOpenPayBills('TV') },
+            { label: 'Electricity', icon: Zap, color: 'bg-amber-100 text-amber-700', action: () => onOpenPayBills('ELECTRICITY') },
+            { label: 'SafeBox', icon: PiggyBank, color: 'bg-purple-100 text-purple-700', action: onOpenVaults },
+            { label: 'Loan', icon: Sparkles, color: 'bg-indigo-100 text-indigo-700', action: () => onOpenPayBills('DATA') },
+            { label: 'More', icon: ChevronRight, color: 'bg-slate-100 text-slate-700', action: () => onOpenPayBills() },
           ].map((item, idx) => {
             const Icon = item.icon;
             return (
@@ -174,7 +178,7 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
         </div>
       </div>
 
-      {/* 3. PROMOTIONAL AD BANNERS (OPAY STYLE) */}
+      {/* 3. PROMOTIONAL AD BANNERS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="bg-gradient-to-r from-purple-900 to-indigo-900 text-white rounded-3xl p-4 flex items-center justify-between border border-purple-800 shadow-xs">
           <div className="flex items-center gap-3">

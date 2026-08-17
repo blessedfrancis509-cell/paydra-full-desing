@@ -61,6 +61,7 @@ export default function App() {
 
   // Active View Tab
   const [activeTab, setActiveTab] = useState<'OVERVIEW' | 'REWARDS' | 'TRANSFER' | 'TRANSACTIONS' | 'CARDS' | 'SAVINGS' | 'ANALYTICS' | 'PROFILE' | 'BILLS'>('OVERVIEW');
+  const [billsCategory, setBillsCategory] = useState<'DATA' | 'AIRTIME' | 'ELECTRICITY' | 'TV' | 'BETTING'>('DATA');
 
   // Mobile Device Frame Mode
   const [isMobileFrame, setIsMobileFrame] = useState(false);
@@ -261,8 +262,13 @@ export default function App() {
                 onOpenSendMoney={() => setActiveTab('TRANSFER')}
                 onOpenAddMoney={() => setIsAddMoneyOpen(true)}
                 onOpenRequestMoney={() => setIsRequestMoneyOpen(true)}
-                onOpenPayBills={() => setActiveTab('BILLS')}
+                onOpenPayBills={(cat) => {
+                  if (cat) setBillsCategory(cat);
+                  setActiveTab('BILLS');
+                }}
                 onOpenFXSwap={() => setIsFXSwapOpen(true)}
+                onOpenTransactions={() => setActiveTab('TRANSACTIONS')}
+                onOpenVaults={() => setActiveTab('SAVINGS')}
               />
 
               {/* Beneficiaries Quick Row */}
@@ -374,12 +380,13 @@ export default function App() {
             />
           )}
 
-          {/* DEDICATED BILLS & DATA PURCHASE PAGE (Not on bottom nav) */}
+          {/* DEDICATED BILLS & DATA PURCHASE PAGE */}
           {activeTab === 'BILLS' && (
             <BillsPage
               userBalance={balances.NGN}
               onCompleteBillPayment={handleBillPaymentSuccess}
               onBackToOverview={() => setActiveTab('OVERVIEW')}
+              initialCategory={billsCategory}
             />
           )}
         </main>
